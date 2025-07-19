@@ -1,7 +1,7 @@
 {
-  "name": "college-app-portal",
+  "name": "glidru",
   "version": "1.0.0",
-  "description": "A web portal for college selection tool",
+  "description": "GlidrU - Your personalized college selection companion",
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",

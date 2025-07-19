@@ -1,6 +1,6 @@
-# 🎓 College Selection Portal
+# 🎓 GlidrU
 
-**A personalized web application to help students organize and customize key questions for finding the perfect college match.**
+**Your personalized college selection companion - helping students organize and customize key questions for finding the perfect college match.**
 
 ---
 
@@ -12,12 +12,12 @@
 
 ## 📋 Overview
 
-The College Selection Portal is a modern React-based web application designed to streamline the college selection process. This tool helps students organize important questions and criteria that guide their college search journey, providing a personalized approach to finding institutions that match their preferences, goals, and needs.
+GlidrU is a modern React-based web application designed to streamline the college selection process. This tool helps students organize important questions and criteria that guide their college search journey, providing a personalized approach to finding institutions that match their preferences, goals, and needs.
 
 ## ✨ Features
 
 - **🎨 Modern UI/UX**: Beautiful, responsive design with gradient backgrounds and smooth animations
-- **📝 Interactive Questions**: Customizable question sets to guide college selection
+- **📝 Interactive Questions**: Customizable question sets to guide your college selection journey
 - **🔄 Real-time Updates**: Dynamic content management with instant feedback
 - **📱 Mobile Responsive**: Optimized for all device sizes
 - **⚡ Fast Performance**: Lightweight React components with efficient rendering
@@ -186,4 +186,4 @@ For technical support or feature requests related to this proprietary software, 
 
 **Built with ❤️ by Blue Sky Mind LLC**
 
-*Empowering students to find their perfect college match through technology.*
+*GlidrU - Empowering students to find their perfect college match through technology.*

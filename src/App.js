@@ -1,7 +1,7 @@
 /**
- * College App Portal - Main App Component
+ * GlidrU - Main App Component
  * 
- * Copyright © 2025 Blue Sky Mind LLC. All rights reserved.
+ * Copyright 2025 Blue Sky Mind LLC. All rights reserved.
  * 
  * This software is proprietary and confidential. Unauthorized copying,
  * distribution, or use is strictly prohibited.

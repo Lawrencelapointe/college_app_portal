@@ -1,7 +1,7 @@
 /**
- * College App Portal - Questions Component
+ * GlidrU - Questions Component
  * 
- * Copyright © 2025 Blue Sky Mind LLC. All rights reserved.
+ * Copyright 2025 Blue Sky Mind LLC. All rights reserved.
  * 
  * This software is proprietary and confidential. Unauthorized copying,
  * distribution, or use is strictly prohibited.
@@ -157,7 +157,7 @@ const Questions = () => {
         <div className="questions-header">
           <Link to="/" className="back-link">← Back to Home</Link>
           <div className="header-content">
-            <h1>College Selection Questions</h1>
+            <h1>GlidrU Question Manager</h1>
             <button 
               className="add-button"
               onClick={() => setShowAddForm(true)}

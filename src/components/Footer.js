@@ -1,5 +1,5 @@
 /**
- * College App Portal - Footer Component
+ * GlidrU - Footer Component
  * 
  * Copyright © 2025 Blue Sky Mind LLC. All rights reserved.
  * 

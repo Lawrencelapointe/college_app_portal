@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# College App Portal Startup Script
+# GlidrU Startup Script
 # Runs both backend and frontend servers
 #
 # Copyright © 2025 Blue Sky Mind LLC. All rights reserved.
@@ -240,7 +240,7 @@ check_dependencies() {
 # Set up trap to catch Ctrl+C
 trap cleanup SIGINT SIGTERM
 
-echo -e "${PURPLE}🚀 Starting College App Portal...${NC}"
+echo -e "${PURPLE}🚀 Starting GlidrU...${NC}"
 echo -e "${BLUE}=================================${NC}\n"
 
 # Check dependencies first

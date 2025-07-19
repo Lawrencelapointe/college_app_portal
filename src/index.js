@@ -1,5 +1,5 @@
 /**
- * College App Portal - React Entry Point
+ * GlidrU - React Entry Point
  * 
  * Copyright © 2025 Blue Sky Mind LLC. All rights reserved.
  * 

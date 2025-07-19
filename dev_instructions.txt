@@ -1,7 +1,7 @@
-the aim of this project is to create a web application that allows users to
-interact with a college selection tool. This is a vanilla web portal application
-that includes the ability to edit a file of key questions that a user
-wants to ask the college selection tool.
+the aim of this project is to create a simple vanilla web portal that is used to let the user 
+interact with GlidrU. This is a vanilla web portal application
+which displays questions that the user
+wants to ask for their college selection process.
 
 The underlying data is stored as a json file in the data file @data/prompts_for_college_data.json. For the 
 web portal the user will see a friendly UI that allows them to edit this file.

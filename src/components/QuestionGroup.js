@@ -1,5 +1,5 @@
 /**
- * College App Portal - Question Group Component
+ * GlidrU - Question Group Component
  * 
  * Copyright © 2025 Blue Sky Mind LLC. All rights reserved.
  * 

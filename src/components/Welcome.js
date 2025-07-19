@@ -1,5 +1,5 @@
 /**
- * College App Portal - Welcome Component
+ * GlidrU - Welcome Component
  * 
  * Copyright © 2025 Blue Sky Mind LLC. All rights reserved.
  * 
@@ -17,13 +17,13 @@ const Welcome = () => {
     <>
       <div className="welcome-container">
       <div className="welcome-content">
-        <h1 className="welcome-title">🎓 College Selection Portal</h1>
+        <h1 className="welcome-title">🎓 GlidrU</h1>
         <p className="welcome-subtitle">
           Your personalized guide to finding the perfect college
         </p>
         <div className="welcome-description">
           <p>
-            Welcome to your college selection tool! This portal helps you organize 
+            Welcome to GlidrU! This app helps you organize 
             and customize the key questions that will guide your college search journey.
           </p>
           <p>
