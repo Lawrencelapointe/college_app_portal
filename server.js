@@ -8,12 +8,23 @@
  */
 
 const express = require('express');
+const cors = require('cors');
 const fs = require('fs').promises;
 const path = require('path');
-const cors = require('cors');
+
+// Initialize Firebase Admin SDK
+const admin = require('firebase-admin');
+const serviceAccount = require('./server/config/serviceAccountKey.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const db = admin.firestore();
+const auth = admin.auth();
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const QUESTIONS_FILE = path.join(__dirname, 'data', 'prompts_for_college_data.json');
 
 // Middleware
