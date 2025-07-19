@@ -1,0 +1,11 @@
+the aim of this project is to create a web application that allows users to
+interact with a college selection tool. This is a vanilla web portal application
+that includes the ability to edit a file of key questions that a user
+wants to ask the college selection tool.
+
+The underlying data is stored as a json file in the data file @data/prompts_for_college_data.json. For the 
+web portal the user will see a friendly UI that allows them to edit this file.
+
+The first step of the project is to create a simple, friendly welcome page that allows a user to navigate
+to the Questions page where they will see the questions as they currently exist in the json
+file based on class.
