@@ -76,7 +76,9 @@ dist
 
 # Gatsby files
 .cache/
-public
+# Note: public directory contains index.html and should be tracked
+# Only ignore Gatsby's generated public directory if using Gatsby
+# public
 
 # Storybook build outputs
 .out

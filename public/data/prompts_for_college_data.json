@@ -1,0 +1,158 @@
+[
+    {
+        "CLASS": "General",
+        "SHORT_NAME": "recognizability",
+        "PROMPT": "On a scale of 1 to 10, how well-known is [college_name] in terms of its general reputation?",
+        "VALUE_TYPE": "INTEGER"
+    },
+    {
+        "CLASS": "General",
+        "SHORT_NAME": "student_body_size",
+        "PROMPT": "What is the approximate number of undergraduate students at [college_name]?",
+        "VALUE_TYPE": "INTEGER"
+    },
+    {
+        "CLASS": "Geography",
+        "SHORT_NAME": "coastal",
+        "PROMPT": "Is [college_name] located within a 2-hour drive of an ocean or a major body of water like the Great Lakes?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "Geography",
+        "SHORT_NAME": "airport",
+        "PROMPT": "Is [college_name] located within a 1-hour drive of a major airport?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "Geography",
+        "SHORT_NAME": "freezing_index",
+        "PROMPT": "Does [college_name] experience very cold winters, with average temperatures frequently below freezing (32°F or 0°C)?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "Geography",
+        "SHORT_NAME": "extreme_heat",
+        "PROMPT": "Does the area around [college_name] experience extreme heat, with summer temperatures often exceeding 95°F or 35°C?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "Geography",
+        "SHORT_NAME": "humidity",
+        "PROMPT": "Is the climate around [college_name] known for having very high humidity during the summer months?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "Geography",
+        "SHORT_NAME": "distance_from_nj",
+        "PROMPT": "Is [college_name] located within a 5-hour driving time from Bridgewater, New Jersey?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "Academic",
+        "SHORT_NAME": "academic_reputation",
+        "PROMPT": "Is [college_name] generally considered to be among the top 100 national colleges and universities in the United States?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "Academic",
+        "SHORT_NAME": "student_teacher_ratio_humanities",
+        "PROMPT": "What is the approximate student-to-teacher ratio for humanities classes at [college_name]?",
+        "VALUE_TYPE": "STRING"
+    },
+    {
+        "CLASS": "Soccer",
+        "SHORT_NAME": "division",
+        "PROMPT": "What NCAA division does the men's soccer team at [college_name] compete in? Please respond with only one of: I, II, or III",
+        "VALUE_TYPE": "STRING"
+    },
+    {
+        "CLASS": "Soccer",
+        "SHORT_NAME": "tutoring",
+        "PROMPT": "Does [college_name] offer a tutoring program for student-athletes to help with academic studies?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "Soccer",
+        "SHORT_NAME": "dormitories",
+        "PROMPT": "Does [college_name] offer dedicated housing where student-athletes room together with other athletes who have similar training schedules and demands?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "Soccer",
+        "SHORT_NAME": "ranking",
+        "PROMPT": "What is the current ranking of the men's soccer team at [college_name] in the NCAA Men's Soccer RPI poll? If not ranked, respond with 0.",
+        "VALUE_TYPE": "INTEGER"
+    },
+    {
+        "CLASS": "Soccer",
+        "SHORT_NAME": "facilities",
+        "PROMPT": "On a scale of 1 to 10, how would you rate the quality of the athletic facilities, specifically for soccer, at [college_name]?",
+        "VALUE_TYPE": "INTEGER"
+    },
+    {
+        "CLASS": "Soccer",
+        "SHORT_NAME": "Stadium_capacity",
+        "PROMPT": "How big is the stadium that the [college_name] mens soccer team plays home games in in terms of seats?",
+        "VALUE_TYPE": "INTEGER"
+    },
+    {
+        "CLASS": "Soccer",
+        "SHORT_NAME": "pro_facilities",
+        "PROMPT": "Are the training facilities at [college_name] on par with professional athletic facilities?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "Soccer",
+        "SHORT_NAME": "pro_track",
+        "PROMPT": "How many professional soccer players have graduated from [college_name] in the last 10 years?",
+        "VALUE_TYPE": "INTEGER"
+    },
+    {
+        "CLASS": "General",
+        "SHORT_NAME": "cost",
+        "PROMPT": "What is the approximate annual cost of attendance (including tuition, fees, room, and board) for an undergraduate student at [college_name]?",
+        "VALUE_TYPE": "INTEGER"
+    },
+    {
+        "CLASS": "General",
+        "SHORT_NAME": "private_public",
+        "PROMPT": "Is [college_name] a private or a public institution?",
+        "VALUE_TYPE": "STRING"
+    },
+    {
+        "CLASS": "General",
+        "SHORT_NAME": "greek_life",
+        "PROMPT": "Does [college_name] have a prominent Greek life culture on campus?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "General",
+        "SHORT_NAME": "party_culture",
+        "PROMPT": "Is [college_name] widely known for having a strong party culture?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "General",
+        "SHORT_NAME": "college_town",
+        "PROMPT": "Is [college_name] associated with a local college town?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "General",
+        "SHORT_NAME": "urban",
+        "PROMPT": "Is [college_name] located in a major metropolitan urban area?",
+        "VALUE_TYPE": "BOOLEAN"
+    },
+    {
+        "CLASS": "General",
+        "SHORT_NAME": "student_regional_diversity",
+        "PROMPT": "What is the approximate percentage of in-state versus out-of-state undergraduate students at [college_name]?",
+        "VALUE_TYPE": "STRING"
+    },
+    {
+        "CLASS": "General",
+        "SHORT_NAME": "student_international_diversity",
+        "PROMPT": "What is the approximate percentage of international undergraduate students at [college_name]?",
+        "VALUE_TYPE": "STRING"
+    }
+]
