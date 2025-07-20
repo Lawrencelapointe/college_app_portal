@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import QuestionGroup from './QuestionGroup';
 import QuestionForm from './QuestionForm';
 import Footer from './Footer';
+import { useAuth } from '../auth/AuthContext';
 import './Questions.css';
 
 const Questions = () => {
@@ -20,18 +21,57 @@ const Questions = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { token, getIdToken, currentUser } = useAuth();
 
   useEffect(() => {
+    // Clear questions when user logs out
+    if (!currentUser) {
+      setQuestions([]);
+      setGroupedQuestions({});
+      setLoading(false);
+      return;
+    }
+    
+    // Load questions for the current user
     loadQuestions();
-  }, []);
+  }, [currentUser]); // Re-run when currentUser changes
+  
+  // Ensure we have a fresh token before making API requests
+  const getAuthHeaders = async () => {
+    // Default headers without authentication
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    
+    // Only add authorization if we can get a token
+    try {
+      if (getIdToken) {
+        const currentToken = await getIdToken(false);
+        if (currentToken) {
+          headers['Authorization'] = `Bearer ${currentToken}`;
+        }
+      }
+    } catch (error) {
+      console.warn('Could not get auth token:', error);
+    }
+    
+    return headers;
+  };
 
   const loadQuestions = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/questions');
+      console.log('Loading questions for user:', currentUser?.uid, currentUser?.email);
+      const headers = await getAuthHeaders();
+      console.log('Request headers:', headers);
+      
+      const response = await fetch('http://localhost:3001/api/questions', {
+        headers
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch questions');
       }
       const data = await response.json();
+      console.log('Received questions:', data.length, 'questions');
       setQuestions(data);
       groupQuestionsByClass(data);
     } catch (error) {
@@ -58,11 +98,10 @@ const Questions = () => {
 
   const handleAddQuestion = async (newQuestion) => {
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch('http://localhost:3001/api/questions', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify(newQuestion),
       });
       
@@ -85,11 +124,14 @@ const Questions = () => {
 
   const handleEditQuestion = async (updatedQuestion) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/questions/${editingQuestion.SHORT_NAME}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const headers = await getAuthHeaders();
+      const url = editingQuestion 
+        ? `http://localhost:3001/api/questions/${editingQuestion.id}`
+        : 'http://localhost:3001/api/questions';
+      const method = editingQuestion ? 'PUT' : 'POST';
+      const response = await fetch(url, {
+        method,
+        headers,
         body: JSON.stringify(updatedQuestion),
       });
       
@@ -100,7 +142,7 @@ const Questions = () => {
       
       const savedQuestion = await response.json();
       const updatedQuestions = questions.map(q => 
-        q.SHORT_NAME === editingQuestion.SHORT_NAME ? savedQuestion : q
+        q.id === editingQuestion.id ? savedQuestion : q
       );
       setQuestions(updatedQuestions);
       groupQuestionsByClass(updatedQuestions);
@@ -112,24 +154,27 @@ const Questions = () => {
     }
   };
 
-  const handleDeleteQuestion = async (shortName) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/questions/${shortName}`, {
-        method: 'DELETE',
-      });
-      
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to delete question');
+  const handleDeleteQuestion = async (question) => {
+    if (window.confirm('Are you sure you want to delete this question?')) {
+      try {
+        const headers = await getAuthHeaders();
+        const response = await fetch(`http://localhost:3001/api/questions/${question.id}`, {
+          method: 'DELETE',
+          headers
+        });
+
+        if (response.ok) {
+          const updatedQuestions = questions.filter(q => q.id !== question.id);
+          setQuestions(updatedQuestions);
+          groupQuestionsByClass(updatedQuestions);
+          console.log('Deleted question:', question.id);
+        } else {
+          const error = await response.json();
+          console.error('Error deleting question:', error);
+        }
+      } catch (error) {
+        console.error('Error deleting question:', error);
       }
-      
-      const updatedQuestions = questions.filter(q => q.SHORT_NAME !== shortName);
-      setQuestions(updatedQuestions);
-      groupQuestionsByClass(updatedQuestions);
-      console.log('Deleted question:', shortName);
-    } catch (error) {
-      console.error('Error deleting question:', error);
-      alert('Failed to delete question: ' + error.message);
     }
   };
 
@@ -164,38 +209,38 @@ const Questions = () => {
             >
               + Add Question
             </button>
-        </div>
-      </div>
-
-      {(showAddForm || editingQuestion) && (
-        <QuestionForm
-          question={editingQuestion}
-          onSave={editingQuestion ? handleEditQuestion : handleAddQuestion}
-          onCancel={() => {
-            setShowAddForm(false);
-            setEditingQuestion(null);
-          }}
-        />
-      )}
-
-      <div className="questions-content">
-        {Object.keys(groupedQuestions).length === 0 ? (
-          <div className="empty-state">
-            <p>No questions found. Click "Add Question" to get started!</p>
           </div>
-        ) : (
-          Object.entries(groupedQuestions).map(([className, classQuestions]) => (
-            <QuestionGroup
-              key={className}
-              className={className}
-              icon={getClassIcon(className)}
-              questions={classQuestions}
-              onEdit={setEditingQuestion}
-              onDelete={handleDeleteQuestion}
-            />
-          ))
+        </div>
+
+        {(showAddForm || editingQuestion) && (
+          <QuestionForm
+            question={editingQuestion}
+            onSave={editingQuestion ? handleEditQuestion : handleAddQuestion}
+            onCancel={() => {
+              setShowAddForm(false);
+              setEditingQuestion(null);
+            }}
+          />
         )}
-      </div>
+
+        <div className="questions-content">
+          {Object.keys(groupedQuestions).length === 0 ? (
+            <div className="empty-state">
+              <p>No questions found. Click "Add Question" to get started!</p>
+            </div>
+          ) : (
+            Object.entries(groupedQuestions).map(([className, classQuestions]) => (
+              <QuestionGroup
+                key={className}
+                className={className}
+                icon={getClassIcon(className)}
+                questions={classQuestions}
+                onEdit={setEditingQuestion}
+                onDelete={handleDeleteQuestion}
+              />
+            ))
+          )}
+        </div>
       </div>
       <Footer />
     </>

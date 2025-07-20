@@ -1,0 +1,174 @@
+/**
+ * GlidrU - User Profile Component Styling
+ * 
+ * Copyright © 2025 Blue Sky Mind LLC. All rights reserved.
+ * 
+ * This software is proprietary and confidential. Unauthorized copying,
+ * distribution, or use is strictly prohibited.
+ */
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 80px);
+}
+
+.profile-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 700px;
+}
+
+.profile-card h2 {
+  margin-bottom: 24px;
+  color: #2c3e50;
+  text-align: center;
+  font-weight: 600;
+}
+
+.profile-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  font-size: 18px;
+  color: #4a5568;
+}
+
+.profile-error {
+  padding: 12px;
+  margin-bottom: 16px;
+  background-color: #fed7d7;
+  color: #c53030;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (min-width: 640px) {
+  .profile-info {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.profile-avatar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 640px) {
+  .profile-avatar {
+    margin-bottom: 0;
+    margin-right: 24px;
+  }
+}
+
+.profile-avatar img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #3498db;
+}
+
+.profile-avatar-placeholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #3498db;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.profile-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.profile-field label {
+  font-weight: 600;
+  color: #4a5568;
+  width: 120px;
+  margin-right: 16px;
+}
+
+.profile-field span {
+  color: #2d3748;
+}
+
+.verified-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  background-color: #c6f6d5;
+  color: #2f855a;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.unverified-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  background-color: #fed7d7;
+  color: #c53030;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.role-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.role-badge {
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.role-badge.admin {
+  background-color: #e9d8fd;
+  color: #6b46c1;
+}
+
+.role-badge.premium {
+  background-color: #fefcbf;
+  color: #975a16;
+}
+
+.role-badge.user {
+  background-color: #e2e8f0;
+  color: #4a5568;
+}

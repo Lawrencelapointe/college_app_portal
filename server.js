@@ -7,6 +7,9 @@
  * distribution, or use is strictly prohibited.
  */
 
+// Load environment variables from .env file
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs').promises;
@@ -23,6 +26,10 @@ admin.initializeApp({
 const db = admin.firestore();
 const auth = admin.auth();
 
+// Import routes and middleware
+const userRoutes = require('./server/routes/userRoutes');
+const { verifyToken, checkRole, attachUserIfAuthenticated } = require('./server/middleware/authMiddleware');
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 const QUESTIONS_FILE = path.join(__dirname, 'data', 'prompts_for_college_data.json');
@@ -32,40 +39,140 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// Read questions from file
-const readQuestionsFromFile = async () => {
+// Apply optional auth middleware to all routes
+// This will attach user info to req.user if a valid token is provided
+app.use(attachUserIfAuthenticated);
+
+// API Routes
+app.use('/api/user', userRoutes);
+
+// Firestore collection reference for user questions
+const questionsCollection = db.collection('questions');
+
+// Get questions for a specific user
+const getUserQuestions = async (userId) => {
   try {
-    const data = await fs.readFile(QUESTIONS_FILE, 'utf8');
-    return JSON.parse(data);
+    console.log(`Getting questions for user: ${userId}`);
+    
+    const snapshot = await questionsCollection
+      .where('userId', '==', userId)
+      .orderBy('createdAt', 'desc')
+      .get();
+    
+    const questions = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      questions.push({ id: doc.id, ...data });
+    });
+    
+    console.log(`Found ${questions.length} questions for user ${userId}`);
+    
+    // Debug: Check for any questions without userId
+    const allSnapshot = await questionsCollection.get();
+    let legacyCount = 0;
+    allSnapshot.forEach(doc => {
+      const data = doc.data();
+      if (!data.userId) {
+        legacyCount++;
+        console.log(`WARNING: Question ${doc.id} has no userId field`);
+      }
+    });
+    if (legacyCount > 0) {
+      console.log(`WARNING: Found ${legacyCount} legacy questions without userId`);
+    }
+    
+    return questions;
   } catch (error) {
-    console.error('Error reading questions file:', error);
+    console.error('Error reading user questions:', error);
     return [];
   }
 };
 
-// Write questions to file
-const writeQuestionsToFile = async (questions) => {
+// Add a question for a user
+const addUserQuestion = async (userId, questionData) => {
   try {
-    await fs.writeFile(QUESTIONS_FILE, JSON.stringify(questions, null, 4));
+    const docRef = await questionsCollection.add({
+      ...questionData,
+      userId,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    });
+    return { id: docRef.id, ...questionData };
+  } catch (error) {
+    console.error('Error adding question:', error);
+    throw error;
+  }
+};
+
+// Update a question for a user
+const updateUserQuestion = async (userId, questionId, questionData) => {
+  try {
+    const docRef = questionsCollection.doc(questionId);
+    const doc = await docRef.get();
+    
+    if (!doc.exists || doc.data().userId !== userId) {
+      throw new Error('Question not found or unauthorized');
+    }
+    
+    await docRef.update({
+      ...questionData,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    });
+    return { id: questionId, ...questionData };
+  } catch (error) {
+    console.error('Error updating question:', error);
+    throw error;
+  }
+};
+
+// Delete a question for a user
+const deleteUserQuestion = async (userId, questionId) => {
+  try {
+    console.log(`Attempting to delete question ${questionId} for user ${userId}`);
+    
+    const docRef = questionsCollection.doc(questionId);
+    const doc = await docRef.get();
+    
+    if (!doc.exists) {
+      console.log(`Question ${questionId} does not exist in database`);
+      throw new Error('Question not found or unauthorized');
+    }
+    
+    const questionData = doc.data();
+    console.log(`Question ${questionId} has userId: ${questionData.userId}, requesting userId: ${userId}`);
+    
+    if (questionData.userId !== userId) {
+      console.log(`User ${userId} not authorized to delete question owned by ${questionData.userId}`);
+      throw new Error('Question not found or unauthorized');
+    }
+    
+    await docRef.delete();
+    console.log(`Successfully deleted question ${questionId}`);
     return true;
   } catch (error) {
-    console.error('Error writing questions file:', error);
-    return false;
+    console.error('Error deleting question:', error);
+    throw error;
   }
 };
 
 // API Routes
-app.get('/api/questions', async (req, res) => {
+
+// Get questions - now requires authentication to get user-specific questions
+app.get('/api/questions', verifyToken, async (req, res) => {
   try {
-    const questions = await readQuestionsFromFile();
+    const userId = req.user.uid;
+    const questions = await getUserQuestions(userId);
     res.json(questions);
   } catch (error) {
+    console.error('Error getting questions:', error);
     res.status(500).json({ error: 'Failed to load questions' });
   }
 });
 
-app.post('/api/questions', async (req, res) => {
+// Protected routes - require authentication
+app.post('/api/questions', verifyToken, async (req, res) => {
   try {
+    const userId = req.user.uid;
     const newQuestion = req.body;
     
     // Validate required fields
@@ -73,79 +180,77 @@ app.post('/api/questions', async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields' });
     }
     
-    const questions = await readQuestionsFromFile();
-    
-    // Check if SHORT_NAME already exists
-    if (questions.some(q => q.SHORT_NAME === newQuestion.SHORT_NAME)) {
+    // Check if SHORT_NAME already exists for this user
+    const existingQuestions = await getUserQuestions(userId);
+    if (existingQuestions.some(q => q.SHORT_NAME === newQuestion.SHORT_NAME)) {
       return res.status(400).json({ error: 'Question with this short name already exists' });
     }
     
-    questions.push(newQuestion);
-    
-    const success = await writeQuestionsToFile(questions);
-    if (success) {
-      res.status(201).json(newQuestion);
-    } else {
-      res.status(500).json({ error: 'Failed to save question' });
-    }
+    const savedQuestion = await addUserQuestion(userId, newQuestion);
+    res.status(201).json(savedQuestion);
   } catch (error) {
+    console.error('Error adding question:', error);
     res.status(500).json({ error: 'Failed to add question' });
   }
 });
 
-app.put('/api/questions/:shortName', async (req, res) => {
+// Update endpoint now uses questionId instead of shortName
+app.put('/api/questions/:questionId', verifyToken, async (req, res) => {
   try {
-    const { shortName } = req.params;
+    const userId = req.user.uid;
+    const { questionId } = req.params;
     const updatedQuestion = req.body;
     
-    const questions = await readQuestionsFromFile();
-    const questionIndex = questions.findIndex(q => q.SHORT_NAME === shortName);
+    // Validate required fields
+    if (!updatedQuestion.SHORT_NAME || !updatedQuestion.PROMPT || !updatedQuestion.CLASS || !updatedQuestion.VALUE_TYPE) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
     
-    if (questionIndex === -1) {
+    // Check if SHORT_NAME is being changed and if it conflicts with another question
+    const existingQuestions = await getUserQuestions(userId);
+    const currentQuestion = existingQuestions.find(q => q.id === questionId);
+    
+    if (!currentQuestion) {
       return res.status(404).json({ error: 'Question not found' });
     }
     
-    // If SHORT_NAME is being changed, check for conflicts
-    if (updatedQuestion.SHORT_NAME !== shortName) {
-      if (questions.some(q => q.SHORT_NAME === updatedQuestion.SHORT_NAME)) {
+    if (updatedQuestion.SHORT_NAME !== currentQuestion.SHORT_NAME) {
+      if (existingQuestions.some(q => q.id !== questionId && q.SHORT_NAME === updatedQuestion.SHORT_NAME)) {
         return res.status(400).json({ error: 'Question with this short name already exists' });
       }
     }
     
-    questions[questionIndex] = updatedQuestion;
-    
-    const success = await writeQuestionsToFile(questions);
-    if (success) {
-      res.json(updatedQuestion);
-    } else {
-      res.status(500).json({ error: 'Failed to update question' });
-    }
+    const savedQuestion = await updateUserQuestion(userId, questionId, updatedQuestion);
+    res.json(savedQuestion);
   } catch (error) {
+    console.error('Error updating question:', error);
     res.status(500).json({ error: 'Failed to update question' });
   }
 });
 
-app.delete('/api/questions/:shortName', async (req, res) => {
+// Delete endpoint now uses questionId instead of shortName
+app.delete('/api/questions/:questionId', verifyToken, async (req, res) => {
   try {
-    const { shortName } = req.params;
+    const userId = req.user.uid;
+    const { questionId } = req.params;
     
-    const questions = await readQuestionsFromFile();
-    const initialLength = questions.length;
-    const filteredQuestions = questions.filter(q => q.SHORT_NAME !== shortName);
-    
-    if (filteredQuestions.length === initialLength) {
-      return res.status(404).json({ error: 'Question not found' });
-    }
-    
-    const success = await writeQuestionsToFile(filteredQuestions);
-    if (success) {
-      res.json({ message: 'Question deleted successfully' });
+    await deleteUserQuestion(userId, questionId);
+    res.json({ message: 'Question deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting question:', error);
+    if (error.message === 'Question not found or unauthorized') {
+      res.status(404).json({ error: 'Question not found' });
     } else {
       res.status(500).json({ error: 'Failed to delete question' });
     }
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to delete question' });
   }
+});
+
+
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 app.listen(PORT, () => {

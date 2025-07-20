@@ -12,16 +12,34 @@
 
 ## 📋 Overview
 
-GlidrU is a modern React-based web application designed to streamline the college selection process. This tool helps students organize important questions and criteria that guide their college search journey, providing a personalized approach to finding institutions that match their preferences, goals, and needs.
+GlidrU is a modern React-based web application designed to streamline the college selection process with personalized user accounts and secure authentication. This tool helps students create and manage their own custom questions and criteria that guide their college search journey, providing a truly personalized approach to finding institutions that match their unique preferences, goals, and needs.
+
+**Key Features:**
+- **🔐 Secure User Authentication**: Firebase-powered login and registration system
+- **👤 Personal Question Management**: Each user can create, edit, and organize their own custom college selection questions
+- **💾 Cloud Data Storage**: User data securely stored and synchronized across devices
+- **🎯 Personalized Experience**: Tailored college selection journey based on individual user preferences
 
 ## ✨ Features
 
-- **🎨 Modern UI/UX**: Beautiful, responsive design with gradient backgrounds and smooth animations
-- **📝 Interactive Questions**: Customizable question sets to guide your college selection journey
+### 🔐 User Authentication & Management
+- **Firebase Authentication**: Secure user registration and login system
+- **User Profiles**: Personalized user accounts with secure data management
+- **Session Management**: Persistent login sessions across browser sessions
+- **Password Security**: Firebase-powered secure password handling
+
+### 📝 Personal Question Management
+- **Custom Question Creation**: Users can create their own college selection questions
+- **Question Organization**: Edit, delete, and reorder personal questions
+- **User-Specific Data**: Each user's questions are private and personalized
+- **Real-time Synchronization**: Questions sync instantly across all user devices
+
+### 🎨 User Experience
+- **Modern UI/UX**: Beautiful, responsive design with gradient backgrounds and smooth animations
+- **📱 Mobile Responsive**: Optimized for all device sizes from desktop to mobile
 - **🔄 Real-time Updates**: Dynamic content management with instant feedback
-- **📱 Mobile Responsive**: Optimized for all device sizes
 - **⚡ Fast Performance**: Lightweight React components with efficient rendering
-- **🚀 Easy Deployment**: Simple startup script for development
+- **🚀 Easy Development**: Simple startup script for local development
 
 ## 🛠️ Technologies Used
 
@@ -33,45 +51,68 @@ GlidrU is a modern React-based web application designed to streamline the colleg
 
 **Backend:**
 - Node.js with Express
-- JSON-based data storage
+- Firebase Firestore for cloud database storage
+- Firebase Authentication for user management
+- User-specific data routing and security
 - CORS enabled for cross-origin requests
-- RESTful API design
+- RESTful API design with user authentication middleware
+
+**Cloud Services:**
+- Firebase Authentication for user login/registration
+- Firebase Firestore for real-time database
+- Firebase SDK integration
 
 **Development Tools:**
 - Create React App for project scaffolding
 - Hot reload for development
 - Concurrent server management
+- Python virtual environment for backend dependencies
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
 - Node.js (v14 or higher)
-- npm or yarn package manager
+- npm (Node Package Manager)
+- Python virtual environment (required for backend)
+- lsof (for port detection; will be installed automatically if missing)
+- Firebase account and project setup
 
 ### Installation
 
 1. **Clone the repository:**
    ```bash
    git clone <repository-url>
-   cd college_app_portal
+   cd glidru
    ```
 
-2. **Install dependencies:**
+2. **Activate the Python virtual environment:**
+   ```bash
+   source /home/lcl/LCLDEV/venvs/devenv/bin/activate
+   ```
+
+3. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. **Start the application:**
+4. **Firebase Setup:**
+   - Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
+   - Enable Authentication (Email/Password provider)
+   - Create a Firestore database
+   - Add your Firebase configuration to the project
+
+5. **Start the application:**
    ```bash
    ./start.sh
    ```
    
    This script will:
-   - Check for port conflicts
-   - Start the backend server (port 3001)
-   - Start the frontend React app (port 3000)
-   - Open your browser automatically
+    - Verify and install missing dependencies (Node.js, npm, lsof) with interactive prompts
+    - Check for port conflicts
+    - Start the backend server (port 3001)
+    - Start the frontend React app (port 3000)
+    - Open your default browser automatically
 
 ### Manual Start (Alternative)
 
@@ -88,19 +129,23 @@ npm start
 ## 🏗️ Project Structure
 
 ```
-college_app_portal/
+glidru/
 ├── src/                    # React frontend source
 │   ├── components/         # React components
 │   │   ├── Welcome.js      # Landing page component
-│   │   ├── Questions.js    # Questions management page
+│   │   ├── Questions.js    # User questions management page
+│   │   ├── Login.js        # User authentication component
+│   │   ├── Register.js     # User registration component
 │   │   ├── Footer.js       # Copyright footer component
 │   │   └── *.css          # Component stylesheets
+│   ├── firebase/           # Firebase configuration
+│   │   └── config.js       # Firebase project settings
 │   ├── App.js             # Main React app component
 │   └── index.js           # React app entry point
-├── data/                   # Data storage
-│   └── prompts_for_college_data.json  # Question data
+├── data/                   # Local data storage (legacy)
+│   └── prompts_for_college_data.json  # Default question templates
 ├── public/                 # Static assets
-├── server.js              # Express backend server
+├── server.js              # Express backend server with Firebase integration
 ├── start.sh               # Development startup script
 ├── package.json           # Project dependencies
 ├── LICENSE                # Commercial license
@@ -110,7 +155,9 @@ college_app_portal/
 ## 🌐 Application Routes
 
 - **`/`** - Welcome page with project introduction
-- **`/questions`** - Interactive questions management interface
+- **`/login`** - User authentication (login/register)
+- **`/questions`** - Personal questions management interface (requires authentication)
+- **`/profile`** - User profile management (requires authentication)
 
 ## 🔧 Development
 

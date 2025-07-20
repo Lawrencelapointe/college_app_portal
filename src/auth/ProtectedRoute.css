@@ -1,0 +1,39 @@
+/**
+ * GlidrU - Protected Route Component Styling
+ * 
+ * Copyright © 2025 Blue Sky Mind LLC. All rights reserved.
+ * 
+ * This software is proprietary and confidential. Unauthorized copying,
+ * distribution, or use is strictly prohibited.
+ */
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 80px);
+  width: 100%;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #3498db;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-container p {
+  color: #3498db;
+  font-size: 18px;
+  font-weight: 500;
+}

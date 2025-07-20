@@ -1,0 +1,184 @@
+/**
+ * GlidrU - Authentication Forms Styling
+ * 
+ * Copyright © 2025 Blue Sky Mind LLC. All rights reserved.
+ * 
+ * This software is proprietary and confidential. Unauthorized copying,
+ * distribution, or use is strictly prohibited.
+ */
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.auth-form-container {
+  width: 100%;
+  max-width: 450px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form-container h2 {
+  margin-bottom: 24px;
+  color: #2c3e50;
+  text-align: center;
+  font-weight: 600;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #4299e1;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+}
+
+.forgot-password {
+  text-align: right;
+}
+
+.forgot-password a {
+  color: #4299e1;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.auth-button {
+  padding: 12px;
+  background-color: #4299e1;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.auth-button:hover {
+  background-color: #3182ce;
+}
+
+.auth-button:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  color: #a0aec0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.auth-divider span {
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+.google-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.google-button:hover {
+  background-color: #f8f9fa;
+}
+
+.google-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.google-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.auth-links {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: #4a5568;
+}
+
+.auth-links a {
+  color: #4299e1;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+.auth-error {
+  padding: 12px;
+  margin-bottom: 16px;
+  background-color: #fed7d7;
+  color: #c53030;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.auth-success {
+  padding: 12px;
+  margin-bottom: 16px;
+  background-color: #c6f6d5;
+  color: #2f855a;
+  border-radius: 4px;
+  font-size: 14px;
+}

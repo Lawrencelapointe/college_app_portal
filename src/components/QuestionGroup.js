@@ -35,11 +35,9 @@ const QuestionGroup = ({ className, icon, questions, onEdit, onDelete }) => {
     return prompt.replace(/\[college_name\]/g, '[COLLEGE]');
   };
 
-  const handleDeleteClick = (shortName, e) => {
+  const handleDeleteClick = (question, e) => {
     e.stopPropagation();
-    if (window.confirm('Are you sure you want to delete this question?')) {
-      onDelete(shortName);
-    }
+    onDelete(question);
   };
 
   return (
@@ -83,7 +81,7 @@ const QuestionGroup = ({ className, icon, questions, onEdit, onDelete }) => {
                   </button>
                   <button 
                     className="delete-btn"
-                    onClick={(e) => handleDeleteClick(question.SHORT_NAME, e)}
+                    onClick={(e) => handleDeleteClick(question, e)}
                     title="Delete question"
                   >
                     🗑️

@@ -148,5 +148,11 @@
         "SHORT_NAME": "Freshman_starters",
         "PROMPT": "How many freshman had minutes last year at [COLLEGE]?",
         "VALUE_TYPE": "INTEGER"
+    },
+    {
+        "CLASS": "General",
+        "SHORT_NAME": "population",
+        "PROMPT": "whats the population of the local town?",
+        "VALUE_TYPE": "INTEGER"
     }
 ]
