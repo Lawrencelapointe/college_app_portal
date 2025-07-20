@@ -275,14 +275,35 @@ if [ "$PORT_CONFLICTS" = true ]; then
     fi
 fi
 
-# Check if node_modules exists
+# Check if node_modules exists or if Firebase is missing
+echo -e "${YELLOW}🔍 Checking project dependencies...${NC}"
+
+install_deps=false
+
+# Check if node_modules directory exists
 if [ ! -d "node_modules" ]; then
+    echo -e "${YELLOW}📦 node_modules not found${NC}"
+    install_deps=true
+else
+    # Check if Firebase is installed
+    if [ ! -d "node_modules/firebase" ]; then
+        echo -e "${YELLOW}📦 Firebase dependency missing${NC}"
+        install_deps=true
+    else
+        echo -e "${GREEN}✅ Firebase dependency found${NC}"
+    fi
+fi
+
+if [ "$install_deps" = true ]; then
     echo -e "${YELLOW}📦 Installing dependencies...${NC}"
     npm install
     if [ $? -ne 0 ]; then
         echo -e "${RED}❌ Failed to install dependencies${NC}"
         exit 1
     fi
+    echo -e "${GREEN}✅ Dependencies installed successfully${NC}"
+else
+    echo -e "${GREEN}✅ All dependencies are present${NC}"
 fi
 
 # Start backend server
