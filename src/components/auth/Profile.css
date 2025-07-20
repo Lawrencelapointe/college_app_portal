@@ -21,13 +21,20 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 30px;
   width: 100%;
-  max-width: 700px;
+  max-width: 800px;
+  min-width: 600px;
 }
 
-.profile-card h2 {
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 24px;
+}
+
+.profile-header h2 {
+  margin: 0;
   color: #2c3e50;
-  text-align: center;
   font-weight: 600;
 }
 
@@ -45,6 +52,16 @@
   margin-bottom: 16px;
   background-color: #fed7d7;
   color: #c53030;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.profile-success {
+  padding: 12px;
+  margin-bottom: 16px;
+  background-color: #c6f6d5;
+  color: #2f855a;
   border-radius: 4px;
   font-size: 14px;
   text-align: center;
@@ -106,43 +123,55 @@
 
 .profile-field {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  padding-bottom: 8px;
+  padding: 12px 0;
   border-bottom: 1px solid #e2e8f0;
+  min-height: 44px;
 }
 
 .profile-field label {
   font-weight: 600;
   color: #4a5568;
-  width: 120px;
-  margin-right: 16px;
+  width: 140px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
 .profile-field span {
   color: #2d3748;
+  display: flex;
+  align-items: center;
 }
 
 .verified-badge {
-  display: inline-block;
-  margin-left: 8px;
-  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+  padding: 4px 12px;
   background-color: #c6f6d5;
   color: #2f855a;
   border-radius: 12px;
   font-size: 12px;
   font-weight: 500;
+  height: 26px;
+  white-space: nowrap;
 }
 
 .unverified-badge {
-  display: inline-block;
-  margin-left: 8px;
-  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+  padding: 4px 12px;
   background-color: #fed7d7;
   color: #c53030;
   border-radius: 12px;
   font-size: 12px;
   font-weight: 500;
+  height: 26px;
+  white-space: nowrap;
 }
 
 .role-badges {
@@ -171,4 +200,26 @@
 .role-badge.user {
   background-color: #e2e8f0;
   color: #4a5568;
+}
+
+.resend-email-btn {
+  padding: 8px 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.resend-email-btn:hover {
+  background-color: #2980b9;
+}
+
+.resend-email-btn:disabled {
+  background-color: #cbd5e0;
+  cursor: not-allowed;
 }

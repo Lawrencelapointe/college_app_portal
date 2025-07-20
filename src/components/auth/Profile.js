@@ -9,6 +9,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../auth/AuthContext';
+import { sendEmailVerification } from 'firebase/auth';
 import './Profile.css';
 
 const Profile = () => {
@@ -16,6 +17,41 @@ const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [resendSuccess, setResendSuccess] = useState('');
+  const [resending, setResending] = useState(false);
+  
+  const handleResendVerificationEmail = async () => {
+    try {
+      setResending(true);
+      setError('');
+      setResendSuccess('');
+      
+      await sendEmailVerification(currentUser);
+      
+      setResendSuccess('Verification email sent! Please check your inbox.');
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        setResendSuccess('');
+      }, 5000);
+    } catch (error) {
+      console.error('Error sending verification email:', error);
+      
+      // Handle specific error cases
+      if (error.code === 'auth/too-many-requests') {
+        setError('Too many requests. Please try again later.');
+      } else {
+        setError('Failed to send verification email. Please try again.');
+      }
+      
+      // Clear error message after 5 seconds
+      setTimeout(() => {
+        setError('');
+      }, 5000);
+    } finally {
+      setResending(false);
+    }
+  };
   
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -68,9 +104,21 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <div className="profile-card">
-        <h2>Your Profile</h2>
+        <div className="profile-header">
+          <h2>Your Profile</h2>
+          {!currentUser.emailVerified && (
+            <button 
+              className="resend-email-btn"
+              onClick={handleResendVerificationEmail}
+              disabled={resending}
+            >
+              {resending ? 'Sending...' : 'Resend Verification Email'}
+            </button>
+          )}
+        </div>
         
         {error && <div className="profile-error">{error}</div>}
+        {resendSuccess && <div className="profile-success">{resendSuccess}</div>}
         
         <div className="profile-info">
           <div className="profile-avatar">
